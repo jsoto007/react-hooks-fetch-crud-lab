@@ -9,7 +9,21 @@ function QuestionForm(props) {
     answer4: "",
     correctIndex: 0,
   });
-
+  function handleSubmitData(e) {
+    e.preventDefault();
+    const itemData = {
+      prompt: formData.prompt,
+      answers: [formData.answer1, formData.answer2, formData.answer3, formData.answer4],
+      correctIndex: formData.correctIndex
+    }
+  fetch("http://localhost:4000/questions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({itemData}),
+  })
+  // .then ((resp) => resp.json())
+  // .then((newItem) => setFormData(newItem))
+}
   function handleChange(event) {
     setFormData({
       ...formData,
@@ -17,15 +31,10 @@ function QuestionForm(props) {
     });
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    console.log(formData);
-  }
-
   return (
     <section>
       <h1>New Question</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmitData}>
         <label>
           Prompt:
           <input
